@@ -54,7 +54,7 @@
 -include_lib("lager/include/lager.hrl").
 
 init([Level, RetryTimes, RetryInterval, Token]) ->
-    io:format("START ~p", [Token]),
+    lager:info("init"),
     State = #state{
                     level          = lager_util:level_to_num(Level),
                     retry_interval = RetryInterval,
