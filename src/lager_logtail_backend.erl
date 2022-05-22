@@ -75,7 +75,7 @@ handle_event({log, Message}, #state{level=Level} = State) ->
 
     case lager_util:is_loggable(Message, Level, ?MODULE) of
         true ->
-            Payload = jiffy:encode(cons_metadata_to_binary_proplist(lager_msg:metadata(Message), [
+            Payload = jsx:encode(cons_metadata_to_binary_proplist(lager_msg:metadata(Message), [
                                      {<<"level">>, any_to_binary(lager_msg:severity(Message))},
                                      {<<"message">>, any_to_binary(lager_msg:message(Message))}
                                  ])),
