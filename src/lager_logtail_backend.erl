@@ -2,7 +2,7 @@
 %%
 %% lager_logtail: Logtail backend for Lager
 %%
-%% Copyright (c) 2012 KIVRA
+%% Copyright (c) 2022 BocDev
 %%
 %% Permission is hereby granted, free of charge, to any person obtaining a
 %% copy of this software and associated documentation files (the "Software"),
@@ -72,6 +72,7 @@ handle_call(_Request, State) ->
 
 %% @private
 handle_event({log, Message}, #state{level=Level} = State) ->
+    io:format("HERE ~p", [Message]),
     case lager_util:is_loggable(Message, Level, ?MODULE) of
         true ->
             Payload = jsx:encode(cons_metadata_to_binary_proplist(lager_msg:metadata(Message), [
