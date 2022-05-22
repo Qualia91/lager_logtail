@@ -54,7 +54,6 @@
 -include_lib("lager/include/lager.hrl").
 
 init([Level, RetryTimes, RetryInterval, Token]) ->
-    lager:info("init"),
     State = #state{
                     level          = lager_util:level_to_num(Level),
                     retry_interval = RetryInterval,
@@ -73,12 +72,12 @@ handle_call(_Request, State) ->
 
 %% @private
 handle_event({log, Message}, #state{level=Level} = State) ->
-    io:format("HERE ~p", [Message]),
+
     case lager_util:is_loggable(Message, Level, ?MODULE) of
         true ->
             Payload = jsx:encode(cons_metadata_to_binary_proplist(lager_msg:metadata(Message), [
-                                     {<<"level">>, any_to_binary(lager_msg:severity(Message))}
-                                    ,{<<"message">>, any_to_binary(lager_msg:message(Message))}
+                                     {<<"level">>, any_to_binary(lager_msg:severity(Message))},
+                                     {<<"message">>, any_to_binary(lager_msg:message(Message))}
                                  ])),
             Request = {State#state.url, [{"te", "chunked"}], "Content-Type: application/json", "Authorization: Bearer " ++ State#state.token, Payload},
             RetryTimes = State#state.retry_times,
