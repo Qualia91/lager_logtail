@@ -122,5 +122,6 @@ any_to_binary(V) when is_atom(V)    -> any_to_binary(atom_to_list(V));
 any_to_binary(V) when is_pid(V)     -> any_to_binary(pid_to_list(V));
 any_to_binary(V) when is_list(V)    -> term_to_binary(V);
 any_to_binary(V) when is_integer(V) -> integer_to_binary(V);
-any_to_binary(V) when is_binary(V)  -> V.
+any_to_binary(V) when is_binary(V)  -> V;
+any_to_binary(V)                    -> term_to_binary(V).
 
