@@ -79,7 +79,7 @@ handle_event({log, Message}, #state{level=Level} = State) ->
                                      {<<"level">>, any_to_binary(lager_msg:severity(Message))},
                                      {<<"message">>, any_to_binary(lager_msg:message(Message))}
                                  ])),
-            Request = {State#state.url, [{"te", "chunked"}], "Content-Type: application/json", "Authorization: Bearer " ++ State#state.token, Payload},
+            Request = {State#state.url, [{"Authorization", "Bearer " ++ State#state.token}], "application/json", Payload},
             RetryTimes = State#state.retry_times,
             RetryInterval = State#state.retry_interval,
 
@@ -107,6 +107,7 @@ code_change(_OldVsn, State, _Extra) ->
 deferred_log(_Request, 0, _) ->
     ok;
 deferred_log(Request, Retries, Interval) ->
+    lager:warning("Request: ~p", [Request]),
     case httpc:request(post, Request, [], [{body_format, binary}]) of
         {ok, {{_, 200, _}, _H, _B}} -> ok;
         _ ->
