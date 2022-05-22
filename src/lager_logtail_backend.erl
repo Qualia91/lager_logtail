@@ -48,7 +48,7 @@
                  retry_interval :: integer(),
                  retry_times    :: integer(),
                  token          :: string(),
-                 url            :: string() = "https://in.logtail.com"
+                 url            :: string()
                }).
 
 -include_lib("lager/include/lager.hrl").
@@ -58,7 +58,8 @@ init([Level, RetryTimes, RetryInterval, Token]) ->
                     level          = lager_util:level_to_num(Level),
                     retry_interval = RetryInterval,
                     retry_times    = RetryTimes,
-                    token          = Token
+                    token          = Token,
+                    url            = "https://in.logtail.com"
                   },
     {ok, State}.
 
