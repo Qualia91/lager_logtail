@@ -19,3 +19,13 @@ An example might look something like this:
 	{lager_logtail_backend, [info, 5, 3, <OWN_TOKEN>]}
 
 Refer to Lager’s documentation for further information on configuring handlers.
+
+##Docker
+
+Docker build container
+
+	docker build -t lager_logtail .
+
+Docker start container shell
+
+	docker run -it --init lager_logtail sh

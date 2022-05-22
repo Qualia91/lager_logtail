@@ -107,7 +107,6 @@ code_change(_OldVsn, State, _Extra) ->
 deferred_log(_Request, 0, _) ->
     ok;
 deferred_log(Request, Retries, Interval) ->
-    lager:warning("Request: ~p", [Request]),
     case httpc:request(post, Request, [], [{body_format, binary}]) of
         {ok, {{_, 200, _}, _H, _B}} -> ok;
         _ ->
