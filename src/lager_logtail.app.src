@@ -24,7 +24,7 @@
 %%
 %% ----------------------------------------------------------------------------
 
-{application, lager_loggly,
+{application, lager_logtail,
  [
   {description, "Logtail backend for Lager"},
   {vsn, "0.0.1"},

@@ -1,7 +1,7 @@
 Overview
 ============
 
-This is a Logtail backend for logtail which lets you send lager logs to your logtail account.
+This is a Logtail backend for logtail which lets you send lager logs to your logtail account. Lager_loggly was copied and edited so i could achieve this, special thanks to them for that!
 
 ##Configuration
 Configure a Lager handler like the following:
