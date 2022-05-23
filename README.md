@@ -3,7 +3,7 @@ Overview
 
 This is a Logtail backend for logtail which lets you send lager logs to your logtail account. Lager_loggly was copied and edited so i could achieve this, special thanks to them for that!
 
-##Configuration
+## Configuration
 Configure a Lager handler like the following:
 
 	{lager_logtail_backend, [Level, MaxRetries, RetryInterval, LogtailToken]}
@@ -20,7 +20,7 @@ An example might look something like this:
 
 Refer to Lager’s documentation for further information on configuring handlers.
 
-##Docker
+## Docker Setup
 
 Docker build container
 
