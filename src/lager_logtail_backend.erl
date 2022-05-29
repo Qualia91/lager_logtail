@@ -105,14 +105,18 @@ code_change(_OldVsn, State, _Extra) ->
 %%% Private
 
 deferred_log(_Request, 0, _) ->
+    io:format("LogTail Request Failed and can't try again"),
     ok;
 deferred_log(Request, Retries, Interval) ->
     case httpc:request(post, Request, [], [{body_format, binary}]) of
         Something -> 
             io:format("Request: ~p", [Something]);
-        {ok, {{_, 200, _}, _H, _B}} -> 
+        {ok, {{_, 200, _}, _Header, _Body}} -> 
             ok;
-        _ ->
+        {ok, {200, _Body}} -> 
+            ok;
+        Failure ->
+            io:format("LogTail Request Failed: ~p", [Failure]),
             timer:sleep(Interval * 1000),
             deferred_log(Request, Retries - 1, Interval)
     end.
