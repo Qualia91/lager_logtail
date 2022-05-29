@@ -107,9 +107,11 @@ code_change(_OldVsn, State, _Extra) ->
 deferred_log(_Request, 0, _) ->
     ok;
 deferred_log(Request, Retries, Interval) ->
-    io:format("Request: ~p", [Request]),
     case httpc:request(post, Request, [], [{body_format, binary}]) of
-        {ok, {{_, 200, _}, _H, _B}} -> ok;
+        Something -> 
+            io:format("Request: ~p", [Something]);
+        {ok, {{_, 200, _}, _H, _B}} -> 
+            ok;
         _ ->
             timer:sleep(Interval * 1000),
             deferred_log(Request, Retries - 1, Interval)
