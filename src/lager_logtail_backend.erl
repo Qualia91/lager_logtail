@@ -107,18 +107,14 @@ code_change(_OldVsn, State, _Extra) ->
 deferred_log(_Request, 0, _) ->
     io:format("LogTail Request Failed and can't try again"),
     ok;
-deferred_log(Request, _Retries, _Interval) ->
+deferred_log(Request, Retries, Interval) ->
     case httpc:request(post, Request, [], [{body_format, binary}]) of
-        Something -> 
-            io:format("Request: ~p", [Something])
-        % {ok, {{_, 200, _}, _Header, _Body}} -> 
-        %     ok;
-        % {ok, {200, _Body}} -> 
-        %     ok;
-        % Failure ->
-        %     io:format("LogTail Request Failed: ~p", [Failure]),
-        %     timer:sleep(Interval * 1000),
-        %     deferred_log(Request, Retries - 1, Interval)
+        {ok, {{_, 202, _}, _Header, _Body}} -> 
+            ok;
+        Failure ->
+            io:format("LogTail Request Failed with ~p retries left: ~p", [Retries, Failure]),
+            timer:sleep(Interval * 1000),
+            deferred_log(Request, Retries - 1, Interval)
     end.
 
 -spec cons_metadata_to_binary_proplist(Metadata::lager_msg_metadata(), Proplist::binary_proplist()) -> Proplist::binary_proplist().
