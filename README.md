@@ -4,7 +4,11 @@ Overview
 This is a Logtail backend for logtail which lets you send lager logs to your logtail account. Lager_loggly was copied and edited so i could achieve this, special thanks to them for that!
 
 ## Configuration
-Configure a Lager handler like the following:
+Add the following to rebar3.config:
+
+	{lager_logtail, "0.1.0"}
+
+Configure a Lager handler like the following :
 
 	{lager_logtail_backend, [Level, MaxRetries, RetryInterval, LogtailToken]}
 
@@ -19,6 +23,10 @@ An example might look something like this:
 	{lager_logtail_backend, [info, 5, 3, <OWN_TOKEN>]}
 
 Refer to Lager’s documentation for further information on configuring handlers.
+
+## Links
+Hex page: https://hex.pm/packages/lager_logtail
+Github page: https://github.com/qualia91/lager_logtail
 
 ## Docker Setup
 
