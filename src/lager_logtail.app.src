@@ -27,7 +27,7 @@
 {application, lager_logtail,
  [
   {description, "Logtail backend for Lager"},
-  {vsn, "0.0.1"},
+  {vsn, "0.1.0"},
   {modules, []},
   {applications, [
                   kernel,
@@ -38,5 +38,7 @@
                   inets,
                   jsx
                  ]},
-  {registered, []}
+  {registered, []},
+  {licenses, ["MIT"]},
+  {links, [{"Github", "https://github.com/qualia91/lager_logtail"}]}
  ]}.
