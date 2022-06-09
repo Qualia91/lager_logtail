@@ -22,11 +22,15 @@
 %% FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 %% DEALINGS IN THE SOFTWARE.
 %%
-%% ----------------------------------------------------------------------------
+%%-----------------------------------------------------------------------------
 
 -module(lager_logtail_backend).
-
+-author(boc_dev).
 -behaviour(gen_event).
+
+%%%=============================================================================
+%%% Exports and Definitions
+%%%=============================================================================
 
 -export([
          init/1,
@@ -50,9 +54,19 @@
                  token          :: string(),
                  url            :: string()
                }).
+-type state() :: state.
 
 -include_lib("lager/include/lager.hrl").
 
+-ifdef(TEST).
+-include_lib("eunit/include/eunit.hrl").
+-endif.
+
+%%%=============================================================================
+%%% Behaviour Impl
+%%%=============================================================================
+
+-spec init(list()) -> {ok, state()}.
 init([Level, RetryTimes, RetryInterval, Token]) ->
     State = #state{
                     level          = lager_util:level_to_num(Level),
@@ -63,14 +77,15 @@ init([Level, RetryTimes, RetryInterval, Token]) ->
                   },
     {ok, State}.
 
+-spec handle_call(get_loglevel | set_loglevel, state()) -> {ok, state()}.
 handle_call(get_loglevel, #state{ level = Level } = State) ->
     {ok, Level, State};
 handle_call({set_loglevel, Level}, State) ->
     {ok, ok, State#state{ level = lager_util:level_to_num(Level) }};
 handle_call(_Request, State) ->
     {ok, ok, State}.
-
-%% @private
+   
+-spec handle_event({log, any()}, state()) -> {ok, state()}.
 handle_event({log, Message}, #state{level=Level} = State) ->
 
     case lager_util:is_loggable(Message, Level, ?MODULE) of
@@ -102,8 +117,11 @@ terminate(_Reason, _State) ->
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
 
-%%% Private
+%%%===================================================================
+%%% Internal functions
+%%%===================================================================
 
+-spec deferred_log(any(), integer(), integer()) -> ok.
 deferred_log(_Request, 0, _) ->
     io:format("LogTail Request Failed and can't try again"),
     ok;
@@ -121,6 +139,7 @@ deferred_log(Request, Retries, Interval) ->
 cons_metadata_to_binary_proplist(Metadata, Proplist) ->
     lists:foldl(fun({Key, Value}, Acc) -> [{any_to_binary(Key), any_to_binary(Value)} | Acc] end, Proplist, Metadata).
 
+-spec any_to_binary(any()) -> binary().
 any_to_binary(V) when is_atom(V)    -> any_to_binary(atom_to_list(V));
 any_to_binary(V) when is_pid(V)     -> any_to_binary(pid_to_list(V));
 any_to_binary(V) when is_list(V)    -> list_to_binary(V);
@@ -128,3 +147,17 @@ any_to_binary(V) when is_integer(V) -> integer_to_binary(V);
 any_to_binary(V) when is_binary(V)  -> V;
 any_to_binary(V)                    -> term_to_binary(V).
 
+%%%===================================================================
+%%% Tests
+%%%===================================================================
+
+-ifdef(TEST).
+
+any_to_binary_test() ->
+    ?assertEqual(<<"hello">>, any_to_binary(hello)),
+    ?assertEqual(<<1,2,3>>, any_to_binary([1,2,3])),
+    ?assertEqual(<<"1">>, any_to_binary(1)),
+    ?assertEqual(<<"1">>, any_to_binary(<<"1">>)),
+    ?assertEqual(<<131,104,2,100,0,5,104,101,108,108,111,97,1>>, any_to_binary({hello, 1})).
+
+-endif.
