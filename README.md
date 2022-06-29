@@ -9,7 +9,8 @@
 </p>
 
 <p align='center'>
-  <img src="https://img.shields.io/badge/Erlang-00ADD8?logo=erlang&logoColor=white" />
+  	<img src="https://img.shields.io/badge/Erlang-00ADD8?logo=erlang&logoColor=white" />
+	<img src="https://img.shields.io/hexpm/v/lager_logtail?https://hex.pm/packages/lager_logtail"/>
 </p>
 
 Overview
