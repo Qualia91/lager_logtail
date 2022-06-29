@@ -1,3 +1,18 @@
+<h1 align='center'>
+  LAGER LOGTAIL
+</h1>
+
+<p align='center'>
+  <img src="https://img.shields.io/badge/License-MIT-blue.svg"/>
+  <img src="https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)](https://github.com/Naereen/badges/"/>
+  <img src="https://github.com/Qualia91/lager_logtail/workflows/Erlang CI/badge.svg">
+</p>
+
+<p align='center'>
+  	<img src="https://img.shields.io/badge/Erlang-00ADD8?logo=erlang&logoColor=white" />
+	<img src="https://img.shields.io/hexpm/v/lager_logtail?https://hex.pm/packages/lager_logtail"/>
+</p>
+
 Overview
 ============
 
@@ -6,7 +21,7 @@ This is a Logtail backend for logtail which lets you send lager logs to your log
 ## Configuration
 Add the following to rebar3.config:
 
-	{lager_logtail, "0.1.0"}
+	{lager_logtail, "0.2.0"}
 
 Configure a Lager handler like the following :
 
@@ -27,13 +42,3 @@ Refer to Lager’s documentation for further information on configuring handlers
 ## Links
 Hex page: https://hex.pm/packages/lager_logtail
 Github page: https://github.com/qualia91/lager_logtail
-
-## Docker Setup
-
-Docker build container
-
-	docker build -t lager_logtail .
-
-Docker start container shell
-
-	docker run -it --init lager_logtail sh
