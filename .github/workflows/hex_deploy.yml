@@ -2,7 +2,7 @@ name: Hex Deploy
 
 on:
   push:
-    branches: [ "hex_release" ]
+    branches: [ "hex_deploy" ]
 
 jobs:
   publish:
